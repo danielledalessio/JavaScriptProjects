@@ -1,0 +1,39 @@
+.background    { background: rgb(52, 166, 251);
+                 table-layout: fixed;
+                 border-spacing: 0;   
+                 background-image:url("http://orig01.deviantart.net/1a15/f/2013/068/4/1/super_candyland_board_background_by_wyldfantasyx-d2hl8yq.jpg");}
+                 /*background from https://scratch.mit.edu/projects/54181750/*/
+.background td { padding: 0;          }
+.lava          { background: #8B4513; }
+.wall          { background: white;   }
+.broc{
+	 width: 0;
+    height: 0;
+    border-bottom: 10px solid transparent;
+    border-left: 3px solid transparent;
+border-right: 7px solid transparent;
+background-image:url("http://www.eatbydate.com/wp-content/uploads/broccoli_icon.png");}
+/*eatbydate.com/*/
+
+.actor  { position: absolute;  }
+.coin   { background: rgb(241, 229, 89); }
+.player { background: pink;
+			border: 1px solid black;}
+.powerup { background-image:url("http://vignette3.wikia.nocookie.net/maplestory/images/3/3c/Item_Strawberry_Candy_(2).png/revision/latest?cb=20110407095551");}
+          /*maplestory.wikia.com*/
+.game {
+  overflow: hidden;
+  max-width: 600px;
+  max-height: 450px;
+  position: relative;
+}
+
+.lost .player {
+  background-image:url("https://i.imgur.com/8OmuUpj.png");
+  /*forum.omegarealm.com*/
+}
+.won .player {
+  box-shadow: -4px -7px 8px white, 4px -7px 8px white;
+  background-image:url("http://upload.3dlat.net/uploads/13469551844.gif");\
+  /*photobucket.com */
+}
