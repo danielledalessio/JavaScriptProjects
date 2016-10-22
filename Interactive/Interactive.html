@@ -1,0 +1,367 @@
+<!doctype html>
+<html>
+<head>
+	<title>Canvas Animation</title>
+<script>
+	var canvas;
+	var context;
+	var circles = [];
+	var rectangles = [];
+	var triangles = [];
+	var arrows = [];
+	var fifths = [];
+	var timer;
+	var imageObj = new Image();
+	var background = new Image();
+	var textDirection ="right";
+    var textXpos = 5;
+    var text = "canvas art";    
+    maxScale = 1,
+    current = 0,
+    step = 0.02,
+    pi2 = Math.PI;
+
+
+	function init(){
+
+		canvas = document.getElementById('canvas');
+		context = canvas.getContext('2d');
+		
+		audio = document.getElementById("audio");
+
+		window.addEventListener('resize', resizeCanvas, false);
+		window.addEventListener('orientationChange', resizeCanvas, false);
+
+		resizeCanvas();
+
+		canvas.onclick = function(event){
+			handleClick(event.clientX, event.clientY);
+		}
+
+		timer = setInterval(resizeCanvas, 30);
+		setInterval("tansform()", 300);
+
+
+	}
+	
+
+	function resizeCanvas(){
+		canvas.width = window.innerWidth - 20;
+		canvas.height = window.innerHeight - 20;
+		fillBackgroundColor();
+		for(var i = 0; i < circles.length; i++){
+			drawCircle(circles[i]);
+		}
+		for(var i = 0; i < rectangles.length; i++){
+			drawRectangle(rectangles[i]);
+		}
+		for(var i = 0; i < triangles.length; i++){
+			drawTriangle(triangles[i]);
+		}
+		for(var i = 0; i < arrows.length; i++){
+			drawArrow(arrows[i]);
+		}
+		for(var i = 0; i < fifths.length; i++){
+			drawFifth(fifths[i]);
+		}
+	}
+	
+
+	function fillBackgroundColor(){
+		context.fillStyle = 'background';
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.drawImage(imageObj, 0, 0);
+		var pattern = context.createPattern(imageObj, 'repeat');
+        context.rect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = pattern;
+        context.fill();
+	}
+	
+	var imageObj = new Image();
+      imageObj.src = 'http://www.ilustracionesgratis.com/wp-content/uploads/2012/graficos/texturas/formas/textura-formas-psicodelia1.jpg';
+	
+		 /*function animate() {   
+
+            var metrics = context.measureText(text);
+            var textWidth = metrics.width;
+
+            if (textDirection == "right") {
+                textXpos += 10;
+
+                if (textXpos > canvas.width - 250) {
+                    textDirection = "left";
+                }
+            }
+            else {
+                textXpos -= 10;
+
+                if (textXpos < 10) {
+                    textDirection = "right";
+                }                    
+            }
+
+            context.font = '40px Arial Black';
+			context.fillStyle = 'black';
+            context.fillText  (text, textXpos, 50);    
+          }     */
+
+	function handleClick(x, y){
+		var found = false;
+
+		for(var i = 0; i < circles.length; i++){
+			d = Math.sqrt((circles[i].x - x)*(circles[i].x - x)+(circles[i].y - y)*(circles[i].y - y));
+			if(d <= 30){
+				circles.splice(i, 1);
+				found = true;
+			}
+		}
+	
+	
+		for(var i = 0; i < rectangles.length; i++){
+			d = Math.sqrt((rectangles[i].x - x)*(rectangles[i].x - x)+(rectangles[i].y - y)*(rectangles[i].y - y));
+			if(d <= 30){
+				rectangles.splice(i, 1);
+				found = true;
+			}
+		}
+	
+		
+		for(var i = 0; i < triangles.length; i++){
+			d = Math.sqrt((triangles[i].x - x)*(triangles[i].x - x)+(triangles[i].y - y)*(triangles[i].y - y));
+			if(d <= 30){
+				triangles.splice(i, 1);
+				found = true;
+			}
+		}
+		
+		for(var i = 0; i < arrows.length; i++){
+			d = Math.sqrt((arrows[i].x - x)*(arrows[i].x - x)+(arrows[i].y - y)*(arrows[i].y - y));
+			if(d <= 30){
+				arrows.splice(i, 1);
+				found = true;
+			}
+		}
+	
+		for(var i = 0; i < fifths.length; i++){
+			d = Math.sqrt((fifths[i].x - x)*(fifths[i].x - x)+(fifths[i].y - y)*(fifths[i].y - y));
+			if(d <= 30){
+				fifths.splice(i, 1);
+				found = true;
+			}
+		}
+	
+		fillBackgroundColor();
+
+		var r = Math.floor(Math.random() * 24)
+
+			if(1 <= r && r < 5){
+			if (!found){
+				var colors = ['#AD8BFE', '#FE98F1', '#7BCAE1', '#72FE95', '#FFFF84', '#FFB347'];
+				var color = colors[Math.floor(Math.random()*colors.length)];
+				circles.push(new Circle(x, y, color));
+			}
+			for(var i = 0; i < circles.length; i++){
+				drawCircle(circles[i]);
+			}
+		}
+		
+			else if(5 <= r && r < 10){
+			if (!found){
+				var colors = ['#AD8BFE', '#FE98F1', '#7BCAE1', '#72FE95', '#FFFF84', '#FFB347'];
+				var color = colors[Math.floor(Math.random()*colors.length)];
+				rectangles.push(new Rectangle(x, y, color));
+			}
+			for(var i = 0; i < rectangles.length; i++){
+				drawRectangle(rectangles[i]);
+			}
+		}
+		
+			else if(10 <= r && r < 15){
+			if (!found){
+				var colors = ['#AD8BFE', '#FE98F1', '#7BCAE1', '#72FE95', '#FFFF84', '#FFB347'];
+				var color = colors[Math.floor(Math.random()*colors.length)];
+				triangles.push(new Triangle(x, y, color));
+			}
+			for(var i = 0; i < triangles.length; i++){
+				drawTriangle(triangles[i]);
+			}
+		}
+			
+			else if(15 <= r && r <= 20){
+			if (!found){
+				var colors = ['#AD8BFE', '#FE98F1', '#7BCAE1', '#72FE95', '#FFFF84', '#FFB347'];
+				var color = colors[Math.floor(Math.random()*colors.length)];
+				arrows.push(new Arrow(x, y, color));
+			}
+			for(var i = 0; i < arrows.length; i++){
+				drawArrow(arrows[i]);
+			}
+		}
+			else if(20 < r && r <= 25){
+			if (!found){
+				var colors = ['#AD8BFE', '#FE98F1', '#7BCAE1', '#72FE95', '#FFFF84', '#FFB347'];
+				var color = colors[Math.floor(Math.random()*colors.length)];
+				fifths.push(new Arrow(x, y, color));
+			}
+			for(var i = 0; i < fifths.length; i++){
+				drawFifth(fifths[i]);
+			}
+		}	
+	}	
+
+
+	function transform() {
+    current += step;
+    current %= pi2;
+    
+    var s = (maxScale * Math.abs(Math.sin(current))) / maxScale + 0.2;
+    
+    context.setTransform(s, 0, 0, s, 0, 0);
+	}
+
+	function Circle(x, y, color){
+		transform();
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*10-5;
+		this.dy = Math.random()*10-5;
+		this.color = color;
+	}
+
+	function drawCircle(circle){
+		transform();
+		context.beginPath();
+		context.arc(circle.x, circle.y, 30, 0, degreesToRadians(360), true);
+		context.globalAlpha = 0.8;
+		context.fillStyle = circle.color;
+		context.fill();
+		
+		if (circle.x + circle.dx > canvas.width || circle.x + circle.dx < 0)		  
+   			circle.dx = -circle.dx;							  //reverse the ball's velocity
+  		if (circle.y + circle.dy > canvas.height || circle.y + circle.dy < 0)		
+    		circle.dy = -circle.dy;							  //reverse the ball's velocity
+  			circle.x += circle.dx;								  //Increase ball x speed by velocity
+ 			circle.y += circle.dy;		
+	}
+
+	function degreesToRadians(degrees){
+		return(degrees * Math.PI)/180;
+	}
+
+	function Rectangle(x, y, color){
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*10-5;
+		this.dy = Math.random()*10-5;
+		this.color = color;
+	}
+
+	function drawRectangle(rectangle){
+		context.beginPath();
+		context.rect(rectangle.x, rectangle.y, 50, 50);
+		context.globalAlpha = 0.8;
+		context.fillStyle = rectangle.color;
+		context.fill();
+		
+		if (rectangle.x + rectangle.dx > canvas.width || rectangle.x + rectangle.dx < 0)		  
+   			rectangle.dx = -rectangle.dx;							  
+  		if (rectangle.y + rectangle.dy > canvas.height || rectangle.y + rectangle.dy < 0)
+    	rectangle.dy = -rectangle.dy;							  
+  		rectangle.x += rectangle.dx;								  
+ 		rectangle.y += rectangle.dy;	
+
+	}
+
+	function Triangle(x, y, color){
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*10-5;
+		this.dy = Math.random()*10-5;
+		this.color = color;
+	}
+
+	function drawTriangle(triangle){
+		context.beginPath();
+		context.moveTo(triangle.x, triangle.y);
+		context.lineTo(triangle.x +25, triangle.y+(-50));
+		context.lineTo(triangle.x + 50, triangle.y);
+		context.globalAlpha = 0.8;
+		context.fillStyle = triangle.color;
+		context.fill();
+	
+		if (triangle.x + triangle.dx > canvas.width || triangle.x + triangle.dx < 0)		  
+   			triangle.dx = -triangle.dx;							  
+  		if (triangle.y + triangle.dy > canvas.height || triangle.y + triangle.dy < 0)
+    	triangle.dy = -triangle.dy;							  
+  		triangle.x += triangle.dx;								  
+ 		triangle.y += triangle.dy;	
+
+	}
+
+	
+	function Arrow(x, y, color){
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*10-5;
+		this.dy = Math.random()*10-5;
+		this.color = color;
+	}
+
+	function drawArrow(arrow){
+		context.beginPath();
+		context.moveTo(arrow.x, arrow.y);
+		context.lineTo(arrow.x + 30, arrow.y+(-15));
+		context.lineTo(arrow.x + 50, arrow.y+(-10));
+		context.lineTo(arrow.x + 30, arrow.y+(-40));
+		context.globalAlpha = 0.8;
+		context.fillStyle = arrow.color;
+		context.fill();
+	
+		if (arrow.x + arrow.dx > canvas.width || arrow.x + arrow.dx < 0)		  
+   			arrow.dx = -arrow.dx;							  
+  		if (arrow.y + arrow.dy > canvas.height || arrow.y + arrow.dy < 0)
+    	arrow.dy = -arrow.dy;							  
+  		arrow.x += arrow.dx;								  
+ 		arrow.y += arrow.dy;	
+
+	}
+	
+	function Fifth(x, y, color){
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*10-5;
+		this.dy = Math.random()*10-5;
+		this.color = color;
+	}
+
+	function drawFifth(fifth){
+		context.beginPath();
+		context.moveTo(fifth.x, fifth.y);
+		context.lineTo(fifth.x + 120, fifth.y+(-40));
+		context.lineTo(fifth.x + 90, fifth.y+(-50));
+		context.lineTo(fifth.x + 70, fifth.y+(-60));
+		context.lineTo(fifth.x + 120, fifth.y+(-70));
+		context.globalAlpha = 0.8;
+		context.fillStyle = fifth.color;
+		context.fill();
+		
+		if (fifth.x + fifth.dx > canvas.width || fifth.x + fifth.dx < 0)		  
+   			fifth.dx = -fifth.dx;							  
+  		if (fifth.y + fifth.dy > canvas.height || fifth.y + fifth.dy < 0)
+    	fifth.dy = -fifth.dy;							  
+  		fifth.x += fifth.dx;								  
+ 		fifth.y += fifth.dy;	
+
+	}
+	//Free Songs To Use youtube.com
+
+window.onload = init;
+
+</script>
+</head>
+<body>
+	<canvas id='canvas' width='500' height='500' <div class="txtStyle">STROKE-ON CANVAS</div></canvas>
+	 <audio src="Arc North - First Light.mp3" autoplay loop>
+    </audio>
+	</body>
+</html>
